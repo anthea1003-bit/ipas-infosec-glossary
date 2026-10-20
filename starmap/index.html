@@ -214,8 +214,7 @@ textarea.out{min-height:260px;font-size:14px}
 /* ================= 科目設定 ================= */
 const SUBJECTS = {
   "1": {label:"科目一", name:"資訊安全管理概論", src:"s1/data.js", base:"s1/"},
-  "2": {label:"科目二", name:"資訊安全技術概論", src:"https://amy610731.github.io/l23-map/sec2/data.js",
-        base:"https://amy610731.github.io/l23-map/sec2/", credit:"Amy610731", home:"https://amy610731.github.io/l23-map/sec2/"}
+  "2": {label:"科目二", name:"資訊安全技術概論", src:"s2/data.js", base:"s2/"}
 };
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
