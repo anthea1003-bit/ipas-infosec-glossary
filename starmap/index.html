@@ -183,27 +183,27 @@ textarea.out{min-height:260px;font-size:14px}
   </header>
 
   <div id="mapWrap">
-    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-label="考點星圖"></svg>
+    <svg id="map" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"></svg>
     <div class="loading" id="loading">載入中…</div>
     <div class="maptools">
       <button class="chip-btn z" id="zin" aria-label="放大">＋</button>
       <button class="chip-btn z" id="zout" aria-label="縮小">－</button>
       <button class="chip-btn" id="zfit">全景</button>
     </div>
-    <div class="filters" id="filters">
+    <nav class="filters" id="filters" aria-label="篩選考點">
       <button class="chip-btn on" data-f="all">全部</button>
       <button class="chip-btn" data-f="hot" id="hotBtn">常考</button>
       <button class="chip-btn" data-f="todo">還不會</button>
       <button class="chip-btn red" data-f="wrong">錯題</button>
       <button class="chip-btn" data-f="X">指引沒寫</button>
-    </div>
+    </nav>
   </div>
 
   <div id="rs" role="separator" aria-label="拖曳調整說明欄寬度"></div>
   <aside id="panel">
     <div class="grab" id="grab" aria-label="拖曳調整說明欄高度"><i></i></div>
     <div class="ptools"><button id="fdn" aria-label="縮小字級">A−</button><button id="fup" aria-label="放大字級">A＋</button></div>
-    <div id="body"></div>
+    <main id="body" aria-live="polite"></main>
   </aside>
   <div class="toast-msg" id="toastMsg"></div>
 </div>
@@ -272,6 +272,8 @@ function record(tid, qi, ok, pick) {
     (quizLog[tid] = quizLog[tid] || {})[qi] = "ok"; save(K.q, quizLog);
   } else { r.w++; r.lvl = 0; r.due = addDays(GAP[0]); r.lastWrong = L[pick]; }
   qa[k] = r; save(K.qa, qa); touchTopic(tid); paint(tid); refreshDim(); updateActions();
+  const nl = $("nowline");   // 讓陪讀家教讀到最新的錯題數
+  if (nl && selected === tid) nl.textContent = nl.textContent.replace(/錯題未過 \d+ 題/, `錯題未過 ${tStat(byId[tid]).open} 題`);
 }
 const unresolved = r => r && r.w > 0 && r.lvl < GAP.length;
 const isDue = r => unresolved(r) && r.due && r.due <= today();
@@ -725,7 +727,9 @@ function openTopic(id, fly, scrollQi) {
   select(id); reveal();
   if (fly || isNarrow()) flyTo(t);
   const s = secById[t.section], c = color(s.chapter), st = progress[id] || 0, ts = tStat(t);
+  const nowLine = `目前讀到：${SUB.label}・${s.id === "X" ? "" : s.id + " "}${s.name}・${t.title}｜近五次考 ${t.examHits || 0} 題｜錯題未過 ${ts.open} 題｜進度：${["未讀", "讀過", "會了"][st]}`;
   body.innerHTML = `<button class="back">← ${s.id === "X" ? "" : esc(s.id) + " "}${esc(s.name)}</button>
+    <p class="tip" id="nowline" style="margin:0 0 4px">${esc(nowLine)}</p>
     <h2 style="color:${c}">${esc(t.title)}</h2>
     <div>${t.examHits ? `<span class="tag hot">近五次考過 ${t.examHits} 題</span>` : `<span class="tag">近五次沒考過</span>`}
       ${ts.open ? `<span class="tag bad">錯題未過 ${ts.open}</span>` : ts.wrong ? `<span class="tag ok">錯題都過了</span>` : ""}
@@ -744,7 +748,7 @@ function openTopic(id, fly, scrollQi) {
     ${(t.quiz || []).length ? `<h3>考題（${t.quiz.length}）</h3>` : ""}<div id="quizzes"></div>`;
   body.querySelector(".back").onclick = () => showSection(s.id);
   body.querySelectorAll(".rel [data-id]").forEach(b => b.onclick = () => openTopic(b.dataset.id, true));
-  body.querySelectorAll("[data-st]").forEach(b => b.onclick = () => { setProgress(id, +b.dataset.st); body.querySelectorAll("[data-st]").forEach(x => x.classList.toggle("on", x === b)); });
+  body.querySelectorAll("[data-st]").forEach(b => b.onclick = () => { setProgress(id, +b.dataset.st); body.querySelectorAll("[data-st]").forEach(x => x.classList.toggle("on", x === b)); const nl = $("nowline"); if (nl) nl.textContent = nl.textContent.replace(/進度：.*$/, "進度：" + ["未讀", "讀過", "會了"][+b.dataset.st]); });
   const ta = body.querySelector(".toastin"); let th = null;
   ta.addEventListener("input", () => {
     clearTimeout(th); th = setTimeout(() => { toasts[id] = ta.value; if (!ta.value.trim()) delete toasts[id]; save(K.toast, toasts); touchTopic(id); paint(id); $("savehint").textContent = "已儲存"; }, 400);
