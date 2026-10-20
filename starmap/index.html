@@ -765,7 +765,7 @@ function recLine(t, qi) {
 }
 function renderQuiz(t, qz, qi, opts = {}) {
   const w = document.createElement("div"); w.className = "quiz";
-  const fig = qz.figure ? `<img src="${esc(figSrc(qz.figure))}" alt="題目附圖" loading="lazy">` : "";
+  const fig = qz.figure ? `<a href="${esc(figSrc(qz.figure))}" target="_blank" rel="noopener"><img src="${esc(figSrc(qz.figure))}" alt="題目附圖" loading="lazy"></a><div class="tip" style="margin:0 0 6px">點圖可放大</div>` : "";
   w.innerHTML = `<div class="src"><span>${esc(qz.source || "")}</span>${opts.showTopic ? `<button class="linkbtn" data-goto style="min-height:0">${esc(t.title)} →</button>` : ""}${recLine(t, qi)}</div>
     <div class="stem">${esc(qz.stem)}</div>${fig}
     ${qz.options.map((o, i) => `<button class="opt" data-i="${i}">(${L[i]}) ${esc(o)}</button>`).join("")}
