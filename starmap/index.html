@@ -132,6 +132,9 @@ svg.far .node.small text.lb{display:none}
 .row-acts{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
 textarea.toastin,textarea.out{width:100%;min-height:76px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:16px/1.6 inherit;font-family:inherit;resize:vertical}
 textarea.out{min-height:260px;font-size:14px}
+.sugg{display:flex;gap:10px;align-items:center;justify-content:space-between;background:rgba(242,201,76,.08);border:1px dashed var(--accent);border-radius:10px;padding:8px 12px;margin:0 0 8px;line-height:1.6}
+.sugg b{color:var(--accent);font-weight:600}
+.sugg .chip-btn{flex:0 0 auto;min-height:36px;font-size:13px}
 .savehint{font-size:calc(var(--u) * .75);color:var(--muted);height:1.4em}
 .score{font-size:calc(var(--u) * 2.4);font-weight:700;color:var(--accent)}
 .toast-msg{position:absolute;left:50%;top:calc(70px + var(--sat));transform:translateX(-50%);background:var(--accent);color:#1b1b1b;padding:8px 14px;border-radius:10px;font-weight:700;z-index:50;display:none;max-width:90%;text-align:center}
@@ -532,7 +535,7 @@ function matches(t) {
   if (filter === "wrong" && tStat(t).open === 0) return false;
   if (filter === "X" && !notInGuide(t)) return false;
   if (!query) return true;
-  return [t.title, t.summary, (t.keyPoints || []).join(" "), t.trap, toasts[t.id]].join(" ").toLowerCase().includes(query);
+  return [t.title, t.summary, (t.keyPoints || []).join(" "), t.trap, t.toast, toasts[t.id]].join(" ").toLowerCase().includes(query);
 }
 const refreshDim = () => topics.forEach(t => nodeEls[t.id] && nodeEls[t.id].classList.toggle("dim", !matches(t)));
 $("filters").addEventListener("click", e => {
@@ -739,6 +742,7 @@ function openTopic(id, fly, scrollQi) {
     <h3>重點</h3><ul>${(t.keyPoints || []).map(k => `<li>${esc(k)}</li>`).join("")}</ul>
     ${t.trap ? `<h3>小心陷阱</h3><div class="trapbox">${esc(t.trap)}</div>` : ""}
     <h3>🍞 我的記憶吐司</h3>
+    ${t.toast ? `<div class="sugg"><span><span class="tip" style="display:block;margin:0">建議口訣</span><b>${esc(t.toast)}</b></span><button class="chip-btn" id="useToast">放進我的吐司</button></div>` : ""}
     <textarea class="toastin" placeholder="用自己的話寫一句口訣，例如「公鑰加密私鑰解，私鑰簽章公鑰驗」">${esc(toasts[id] || "")}</textarea>
     <div class="savehint" id="savehint"></div>
     ${nbrs[id].length ? `<h3>相關考點（${nbrs[id].length}）</h3><div class="rel">${nbrs[id].map(n => `<button data-id="${esc(n.id)}"><b style="color:${color(chOf(byId[n.id]))}">${prog3(n.id)} ${esc(byId[n.id].title)}</b>${n.why ? `<span>${esc(n.why)}</span>` : ""}</button>`).join("")}</div>` : ""}
@@ -754,6 +758,11 @@ function openTopic(id, fly, scrollQi) {
     clearTimeout(th); th = setTimeout(() => { toasts[id] = ta.value; if (!ta.value.trim()) delete toasts[id]; save(K.toast, toasts); touchTopic(id); paint(id); $("savehint").textContent = "已儲存"; }, 400);
   });
   $("sumBtn").onclick = () => showSummary([t]);
+  if ($("useToast")) $("useToast").onclick = () => {   // 建議口訣放進自己的吐司，之後可以自己改寫
+    ta.value = ta.value.trim() ? ta.value.trim() + "\n" + t.toast : t.toast;
+    toasts[id] = ta.value; save(K.toast, toasts); touchTopic(id); paint(id);
+    $("savehint").textContent = "已放進你的吐司，可以改成自己的話"; ta.focus();
+  };
   const box = body.querySelector("#quizzes");
   (t.quiz || []).forEach((qz, qi) => box.appendChild(renderQuiz(t, qz, qi)));
   body.scrollTop = 0;
@@ -830,7 +839,7 @@ function showWrongBook() {
   body.querySelectorAll("[data-cp]").forEach(b => b.onclick = () => copyText("#錯題 " + qText(list[+b.dataset.cp], false), "，貼給教練"));
   const md = arr => `# iPAS 資安初級 ${SUB.label} 錯題本（${today().replace(/-/g, "/")}）\n\n` + arr.map(x => {
     const r = qa[qkey(x.t.id, x.qi)];
-    return `### ${unresolved(r) ? "🔴" : "🟢"} ${x.t.title}\n` + qText(x, true).split("\n").slice(1).join("\n") + `\n\n🍞 記憶吐司：${toasts[x.t.id] || "（未填）"}\n`;
+    return `### ${unresolved(r) ? "🔴" : "🟢"} ${x.t.title}\n` + qText(x, true).split("\n").slice(1).join("\n") + `\n\n🍞 我的吐司：${toasts[x.t.id] || "（未填）"}${x.t.toast ? `\n💡 建議口訣：${x.t.toast}` : ""}\n`;
   }).join("\n---\n\n");
   if ($("cpAll")) $("cpAll").onclick = () => copyText(md(list), "錯題本");
   if ($("cpOpen")) $("cpOpen").onclick = () => copyText(md(open), "未過的錯題");
@@ -853,7 +862,7 @@ function summaryText(t) {
 掌握程度：${level}
 
 【判斷口訣】
-${(t.keyPoints || [])[0] || "（無）"}
+${t.toast || (t.keyPoints || [])[0] || "（無）"}
 
 【核心比喻】
 ${firstSentence}
