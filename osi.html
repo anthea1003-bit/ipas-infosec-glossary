@@ -37,6 +37,18 @@
   ul{margin:0;padding-left:1.2em}
   li{margin:4px 0;font-size:.95rem}
   footer{color:var(--muted);font-size:.82rem;margin-top:2em}
+  .m-beat,.m-lab{display:grid;grid-template-columns:2.6fr 1fr 1.35fr 2fr;gap:5px}
+  .m-beat div{background:var(--on-bg);color:var(--on-text);border:1px solid var(--on-line);border-radius:8px;text-align:center;padding:10px 2px;font-size:1.2rem;font-weight:600;letter-spacing:.15em}
+  .m-lab{margin:4px 0 6px}.m-lab div{text-align:center;font-size:.75rem;color:var(--muted)}
+  .m-lab.pdu div{color:var(--tcp-text)}
+  .m-step{font-size:.85rem;color:var(--muted);margin:18px 0 6px}
+  .m-row{display:grid;grid-template-columns:26px minmax(0,1fr) 96px;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .m-n{font-weight:600;color:var(--muted);text-align:center}
+  .m-s{font-size:.93rem;line-height:1.5}
+  .m-a{font-size:.93rem;font-weight:600;text-align:right;border-radius:6px;padding:2px 4px}
+  .hid .m-a{color:transparent;background:var(--card)}
+  .hid .m-row.show .m-a{color:var(--tcp-text);background:transparent}
+  #m-t{background:transparent;color:var(--on-text);border:1px solid var(--on-line);border-radius:8px;padding:8px 14px;font:inherit;font-size:.9rem;cursor:pointer}
 </style>
 </head>
 <body><main>
@@ -67,6 +79,24 @@
 </div>
 
 <div id="d"><p style="margin:0;color:var(--muted)">點任一層看細節</p></div>
+
+<h3>🧠 背誦法</h3>
+<p class="m-step">① 唸成 4 拍（剛好 = TCP/IP 4 層）</p>
+<div class="m-beat"><div>應表會</div><div>傳</div><div>網</div><div>資實</div></div>
+<div class="m-lab"><div>應用層</div><div>傳輸層</div><div>網際網路層</div><div>網路存取層</div></div>
+<div class="m-lab pdu"><div>資料</div><div>區段</div><div>封包</div><div>訊框・位元</div></div>
+<p class="m-step">② 寄包裹故事（從 7 往下寄出）</p>
+<div id="m-list">
+<div class="m-row"><span class="m-n">7</span><span class="m-s">寫好要寄的東西</span><span class="m-a">應用層</span></div>
+<div class="m-row"><span class="m-n">6</span><span class="m-s">翻譯、壓縮、上鎖封箱</span><span class="m-a">表現層</span></div>
+<div class="m-row"><span class="m-n">5</span><span class="m-s">先打電話跟對方約好收件</span><span class="m-a">會議層</span></div>
+<div class="m-row"><span class="m-n">4</span><span class="m-s">拆成多箱、貼「第 1/3 箱」編號</span><span class="m-a">傳輸層</span></div>
+<div class="m-row"><span class="m-n">3</span><span class="m-s">寫收件地址、規劃路線</span><span class="m-a">網路層</span></div>
+<div class="m-row"><span class="m-n">2</span><span class="m-s">送到下一個轉運站的門牌</span><span class="m-a">資料鏈結層</span></div>
+<div class="m-row"><span class="m-n">1</span><span class="m-s">卡車在馬路上跑</span><span class="m-a">實體層</span></div>
+</div>
+<p class="m-step">③ 遮住層名自我測驗：先說出答案，再點那一列。7 列全對連續 3 天就差不多熟了。</p>
+<button id="m-t">遮住層名</button>
 
 <h3>⚠️ 教材歸類不一（別當定論）</h3>
 <ul>
@@ -117,6 +147,9 @@ g.addEventListener('click',e=>{
   else sel(P[c.dataset.p][0]);
 });
 sel(4);
+const ML=document.getElementById('m-list'),MT=document.getElementById('m-t');let mOn=false;
+MT.onclick=()=>{mOn=!mOn;ML.classList.toggle('hid',mOn);ML.querySelectorAll('.m-row').forEach(r=>r.classList.remove('show'));MT.textContent=mOn?'顯示全部':'遮住層名';};
+ML.addEventListener('click',e=>{const r=e.target.closest('.m-row');if(r&&mOn)r.classList.add('show');});
 </script>
 </body>
 </html>
