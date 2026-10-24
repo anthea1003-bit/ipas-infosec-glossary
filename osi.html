@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OSI × TCP/IP 對照圖</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  body{margin:0;background:#0f1418;color:#e6edf3;font:16px/1.6 -apple-system,"PingFang TC","Noto Sans TC",sans-serif;padding:24px 16px 40px}
+  main{max-width:640px;margin:0 auto}
+  a.back{color:#9fb0bf;font-size:.9rem;text-decoration:none}
+  h1{font-size:1.5rem;margin:.4em 0 .2em}
+  p.sub{color:#9fb0bf;margin:0 0 1.2em;font-size:.95rem}
+  .key{background:#171f26;border-left:4px solid #FCB316;padding:12px 14px;margin:0 0 18px;font-size:.98rem}
+  .hd,.g{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.9fr) minmax(0,1.1fr);gap:5px}
+  .hd div{font-size:.8rem;color:#9fb0bf;text-align:center;padding-bottom:4px}
+  .g{grid-template-rows:repeat(7,56px)}
+  .c{border:1px solid #2a3540;border-radius:10px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;padding:2px 4px;line-height:1.25;-webkit-tap-highlight-color:transparent;user-select:none}
+  .c b{font-weight:600;font-size:.88rem}
+  .c span{font-size:.72rem;color:#9fb0bf}
+  .o{background:#171f26}
+  .p{background:transparent;border-style:dashed}
+  .t{background:#13262a;border-color:#2c4a4f}
+  .c.on{border:2px solid #4fd1c5;background:#173a3a}
+  .c.on b{color:#4fd1c5}
+  #d{margin:16px 0;background:#171f26;border:1px solid #2a3540;border-radius:14px;padding:16px 18px;min-height:170px}
+  #d h2{margin:0 0 8px;font-size:1.15rem;color:#f2c94c}
+  .row{font-size:.95rem;margin:6px 0}
+  .row i{display:inline-block;min-width:5.5em;color:#9fb0bf;font-style:normal}
+  h3{font-size:1.05rem;margin:22px 0 8px}
+  ul{margin:0;padding-left:1.2em}
+  li{margin:4px 0;font-size:.95rem}
+  footer{color:#6f7f8c;font-size:.82rem;margin-top:2em}
+</style>
+</head>
+<body><main>
+<a class="back" href="./">← 回首頁</a>
+<h1>OSI × TCP/IP 對照圖</h1>
+<p class="sub">點任一格，看該層的資料單位、協定、設備、攻擊。</p>
+
+<div class="key">OSI 5–7 層 → TCP/IP 應用層；1–2 層 → 網路存取層；3、4 層一對一。</div>
+
+<div class="hd"><div>OSI 七層</div><div>資料單位 PDU</div><div>TCP/IP 四層</div></div>
+<div class="g" id="g">
+  <div class="c o" data-o="7" style="grid-area:1/1"><b>7 應用層</b><span>Application</span></div>
+  <div class="c o" data-o="6" style="grid-area:2/1"><b>6 表現層</b><span>Presentation</span></div>
+  <div class="c o" data-o="5" style="grid-area:3/1"><b>5 會議層</b><span>Session</span></div>
+  <div class="c o" data-o="4" style="grid-area:4/1"><b>4 傳輸層</b><span>Transport</span></div>
+  <div class="c o" data-o="3" style="grid-area:5/1"><b>3 網路層</b><span>Network</span></div>
+  <div class="c o" data-o="2" style="grid-area:6/1"><b>2 資料鏈結層</b><span>Data link</span></div>
+  <div class="c o" data-o="1" style="grid-area:7/1"><b>1 實體層</b><span>Physical</span></div>
+  <div class="c p" data-p="a" style="grid-area:1/2/4/3"><b>資料</b><span>Data</span></div>
+  <div class="c p" data-p="4" style="grid-area:4/2"><b>區段</b><span>Segment</span></div>
+  <div class="c p" data-p="3" style="grid-area:5/2"><b>封包</b><span>Packet</span></div>
+  <div class="c p" data-p="2" style="grid-area:6/2"><b>訊框</b><span>Frame</span></div>
+  <div class="c p" data-p="1" style="grid-area:7/2"><b>位元</b><span>Bits</span></div>
+  <div class="c t" data-t="A" style="grid-area:1/3/4/4"><b>應用層</b><span>Application</span></div>
+  <div class="c t" data-t="T" style="grid-area:4/3"><b>傳輸層</b><span>Transport</span></div>
+  <div class="c t" data-t="I" style="grid-area:5/3"><b>網際網路層</b><span>Internet</span></div>
+  <div class="c t" data-t="L" style="grid-area:6/3/8/4"><b>網路存取層</b><span>Link</span></div>
+</div>
+
+<div id="d"><p style="margin:0;color:#9fb0bf">點任一層看細節</p></div>
+
+<h3>⚠️ 教材歸類不一（別當定論）</h3>
+<ul>
+  <li><b>TLS</b>：有教材放第 6 層、有放第 4 層、也有說介於 4 與 7 之間。考試以 iPAS 官方教材為準。</li>
+  <li><b>ARP</b>：有放第 2 層，也有放 2、3 層之間。</li>
+  <li><b>TCP/IP 層數</b>：有教材用 5 層版（網路存取層拆成資料鏈結層＋實體層）。本圖 4 層版依 RFC 1122。</li>
+  <li>圖中設備與攻擊範例是常見教學歸類，不是標準本身的規定。</li>
+</ul>
+
+<h3>來源</h3>
+<ul>
+  <li>OSI 七層：ISO/IEC 7498-1</li>
+  <li>TCP/IP 四層（Link／Internet／Transport／Application）：<a href="https://www.rfc-editor.org/rfc/rfc1122" style="color:#4fd1c5">RFC 1122</a></li>
+</ul>
+
+<footer>建立：2026-10-24</footer>
+</main>
+<script>
+const D={
+7:["7 應用層","資料 Data","HTTP、HTTPS、FTP、SMTP、DNS、SSH、Telnet","WAF、Proxy","SQLi、XSS、CSRF"],
+6:["6 表現層","資料 Data","資料格式、編碼、壓縮、加解密（如 ASCII、JPEG）","—","TLS 常被教材歸在這層，但各教材歸類不一"],
+5:["5 會議層","資料 Data","建立、維持、結束連線（如 NetBIOS、RPC）","—","Session hijacking 會話劫持"],
+4:["4 傳輸層","TCP 區段 Segment／UDP 資料包 Datagram","TCP（可靠、三向交握）、UDP（快、不保證）、Port 號","防火牆（狀態檢查）","SYN Flood、UDP Flood、Port scan"],
+3:["3 網路層","封包 Packet","IP、ICMP、IPsec、路由","路由器 Router、L3 Switch","IP spoofing、ICMP Flood"],
+2:["2 資料鏈結層","訊框 Frame","MAC 位址、Ethernet、ARP（教材常放此層或 2/3 層之間）","交換器 Switch、橋接器 Bridge","ARP spoofing、MAC flooding"],
+1:["1 實體層","位元 Bits","電訊號、光訊號、纜線","集線器 Hub、中繼器 Repeater","竊聽線路、實體破壞"]};
+const T={A:[7,6,5],T:[4],I:[3],L:[2,1]};
+const P={a:[7,6,5],4:[4],3:[3],2:[2],1:[1]};
+const g=document.getElementById('g'),d=document.getElementById('d');
+const find=(m,o)=>Object.keys(m).find(k=>m[k].includes(o));
+function sel(o){
+  g.querySelectorAll('.c').forEach(e=>e.classList.remove('on'));
+  g.querySelector('[data-o="'+o+'"]').classList.add('on');
+  g.querySelector('[data-t="'+find(T,o)+'"]').classList.add('on');
+  g.querySelector('[data-p="'+find(P,o)+'"]').classList.add('on');
+  const x=D[o];
+  d.innerHTML='<h2>'+x[0]+'</h2>'+
+    '<div class="row"><i>資料單位</i>'+x[1]+'</div>'+
+    '<div class="row"><i>協定／功能</i>'+x[2]+'</div>'+
+    '<div class="row"><i>設備</i>'+x[3]+'</div>'+
+    '<div class="row"><i>攻擊／備註</i>'+x[4]+'</div>';
+}
+g.addEventListener('click',e=>{
+  const c=e.target.closest('.c');if(!c)return;
+  if(c.dataset.o)sel(+c.dataset.o);
+  else if(c.dataset.t)sel(T[c.dataset.t][0]);
+  else sel(P[c.dataset.p][0]);
+});
+sel(4);
+</script>
+</body>
+</html>
