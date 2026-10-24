@@ -46,7 +46,9 @@
   .m-n{font-weight:600;color:var(--muted);text-align:center}
   .m-s{font-size:.93rem;line-height:1.5}
   .m-a{font-size:.93rem;font-weight:600;text-align:right;border-radius:6px;padding:2px 4px}
-  .hid .m-a{color:transparent;background:var(--card)}
+  .m-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:22px 0}
+  .m-box h3{margin-top:0}
+  .hid .m-a{color:transparent;background:var(--page)}
   .hid .m-row.show .m-a{color:var(--tcp-text);background:transparent}
   #m-t{background:transparent;color:var(--on-text);border:1px solid var(--on-line);border-radius:8px;padding:8px 14px;font:inherit;font-size:.9rem;cursor:pointer}
 </style>
@@ -80,6 +82,7 @@
 
 <div id="d"><p style="margin:0;color:var(--muted)">點任一層看細節</p></div>
 
+<section class="m-box">
 <h3>🧠 背誦法</h3>
 <p class="m-step">① 唸成 4 拍（剛好 = TCP/IP 4 層）</p>
 <div class="m-beat"><div>應表會</div><div>傳</div><div>網</div><div>資實</div></div>
@@ -97,6 +100,7 @@
 </div>
 <p class="m-step">③ 遮住層名自我測驗：先說出答案，再點那一列。7 列全對連續 3 天就差不多熟了。</p>
 <button id="m-t">遮住層名</button>
+</section>
 
 <h3>⚠️ 教材歸類不一（別當定論）</h3>
 <ul>
