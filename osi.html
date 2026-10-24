@@ -70,7 +70,7 @@
 
 <h3>⚠️ 教材歸類不一（別當定論）</h3>
 <ul>
-  <li><b>TLS</b>：有教材放第 6 層、有放第 4 層、也有說介於 4 與 7 之間。考試以 iPAS 官方教材為準。</li>
+  <li><b>TLS</b>：iPAS 官方歸為「介於應用層與傳輸層之間」，對傳輸層連線加密（115-1 科二第 6 題、科一學習指引）。其他教材有放第 6 層的，考試以 iPAS 為準。</li>
   <li><b>ARP</b>：有放第 2 層，也有放 2、3 層之間。</li>
   <li><b>TCP/IP 層數</b>：有教材用 5 層版（網路存取層拆成資料鏈結層＋實體層）。本圖 4 層版依 RFC 1122。</li>
   <li><b>最底層的名字</b>：網路存取層（Network access）、鏈結層（Link）、網路介面層（Network interface）都是同一層。RFC 1122 用 Link；Google 資安課程用 Network access。</li>
@@ -88,9 +88,9 @@
 <script>
 const D={
 7:["7 應用層","資料 Data","HTTP、HTTPS、FTP、SMTP、DNS、SSH、Telnet","WAF、Proxy","SQLi、XSS、CSRF"],
-6:["6 表現層","資料 Data","資料格式、編碼、壓縮、加解密（如 ASCII、JPEG）","—","TLS 常被教材歸在這層，但各教材歸類不一"],
+6:["6 表現層","資料 Data","資料格式、編碼、壓縮、加解密（如 ASCII、JPEG）","—","OSI 定義此層負責加解密，所以部分教材把 TLS 放這層；iPAS 官方不是這樣歸（見第 4 層）"],
 5:["5 會議層","資料 Data","建立、維持、結束連線（如 NetBIOS、RPC）","—","Session hijacking 會話劫持"],
-4:["4 傳輸層","TCP 區段 Segment／UDP 資料包 Datagram","TCP（可靠、三向交握）、UDP（快、不保證）、Port 號","防火牆（狀態檢查）","SYN Flood、UDP Flood、Port scan"],
+4:["4 傳輸層","TCP 區段 Segment／UDP 資料包 Datagram","TCP（可靠、三向交握）、UDP（快、不保證）、Port 號","防火牆（狀態檢查）","SYN Flood、UDP Flood、Port scan；TLS／SSL 在 iPAS 官方歸為「介於應用層與傳輸層之間」"],
 3:["3 網路層","封包 Packet","IP、ICMP、IPsec、路由","路由器 Router、L3 Switch","IP spoofing、ICMP Flood"],
 2:["2 資料鏈結層","訊框 Frame","MAC 位址、Ethernet、ARP（教材常放此層或 2/3 層之間）","交換器 Switch、橋接器 Bridge","ARP spoofing、MAC flooding"],
 1:["1 實體層","位元 Bits","電訊號、光訊號、纜線","集線器 Hub、中繼器 Repeater","竊聽線路、實體破壞"]};
