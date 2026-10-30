@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="zh-Hant">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>資安初級考前急救</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one long scroll in study order, sticky subject nav; dark-first, NXP yellow/blue/green as subject keys */
+:root{
+  --bg:#0e1317; --panel:#161e25; --panel2:#1c262f; --line:#2b3843;
+  --fg:#e8edf0; --muted:#9aa9b4;
+  --y:#FCB316; --b:#6DACDE; --g:#8fbf63; --gfill:#6D9A45; --red:#ff7a6b;
+  --yt:#FCB316; --chip:#24313b;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#f5f6f3; --panel:#ffffff; --panel2:#eef1ee; --line:#d7ddd8;
+  --fg:#18212a; --muted:#5b6872;
+  --y:#FCB316; --b:#2c74a8; --g:#4a7a26; --gfill:#6D9A45; --red:#c23b2b;
+  --yt:#8a5b00; --chip:#e7ece8; color-scheme:light}}
+:root[data-theme="light"]{
+  --bg:#f5f6f3; --panel:#ffffff; --panel2:#eef1ee; --line:#d7ddd8;
+  --fg:#18212a; --muted:#5b6872;
+  --y:#FCB316; --b:#2c74a8; --g:#4a7a26; --gfill:#6D9A45; --red:#c23b2b;
+  --yt:#8a5b00; --chip:#e7ece8; color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.6}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 60px}
+h1{font-size:clamp(26px,6vw,40px);font-weight:900;line-height:1.15;margin:0;text-wrap:balance;letter-spacing:.01em}
+h1 em{font-style:normal;color:var(--yt)}
+h2{font-size:22px;font-weight:900;margin:0;text-wrap:balance}
+h3{font-size:16px;font-weight:700;margin:0 0 8px;text-wrap:balance}
+p{margin:0}
+.lede{color:var(--muted);margin-top:8px;max-width:62ch}
+.mono{font-family:var(--f-mono)}
+/* stats strip */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.stat b{display:block;font-family:var(--f-mono);font-size:22px;color:var(--yt);font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:18px calc(-1*max(16px,env(safe-area-inset-left,0px))) 0;padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+nav a{color:var(--fg);text-decoration:none;font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line)}
+nav a.k1{border-color:var(--b)} nav a.k2{border-color:var(--g)} nav a.kq{border-color:var(--y)}
+nav a:focus-visible,button:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.quiz{margin-left:auto;font:700 13px var(--f-body);background:var(--y);color:#1a1300;border:0;border-radius:999px;padding:7px 14px;cursor:pointer}
+.quiz[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+/* sections */
+section{margin-top:34px;scroll-margin-top:70px}
+.sec-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.tag{font:700 12px var(--f-mono);letter-spacing:.06em;padding:3px 8px;border-radius:6px;color:#0e1317}
+.t1{background:var(--b)} .t2{background:var(--gfill);color:#fff} .tq{background:var(--y)}
+.sec-head .w{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 12px;min-width:0}
+.card.k1 h3{color:var(--b)} .card.k2 h3{color:var(--g)}
+.card ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.card li{padding-left:2px}
+.hot{font:700 11px var(--f-mono);color:#1a1300;background:var(--y);border-radius:4px;padding:1px 6px;margin-left:6px;vertical-align:2px;white-space:nowrap}
+/* source chip */
+.s{font:500 11px var(--f-mono);color:var(--muted);background:var(--chip);border-radius:4px;padding:0 5px;white-space:nowrap;margin-left:3px}
+/* answer highlight & quiz blur */
+.a{color:var(--yt);font-weight:700;border-radius:4px;transition:filter .15s}
+.x{color:var(--red);font-weight:700}
+body.qz .a{filter:blur(6px);cursor:pointer;user-select:none}
+body.qz .a.on{filter:none}
+@media (prefers-reduced-motion:reduce){.a{transition:none}}
+/* tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);font-size:12px;color:var(--muted);letter-spacing:.04em;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.k{white-space:nowrap;font-weight:700}
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:4px 0 10px}
+.tl div{background:var(--panel2);border-radius:8px;padding:8px;text-align:center;font-size:13px;line-height:1.35}
+.tl b{display:block;font-family:var(--f-mono);font-size:18px;color:var(--yt)}
+.tl .lv{font-size:11px;color:var(--muted)}
+@media (max-width:520px){.tl{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* RPO RTO axis */
+.axis{position:relative;margin:6px 0 12px;padding-top:4px}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:0}
+.seg{height:34px;display:flex;align-items:center;justify-content:center;font:700 13px var(--f-mono);color:#0e1317}
+.seg.l{background:var(--b);border-radius:8px 0 0 8px}
+.seg.r{background:var(--gfill);color:#fff;border-radius:0 8px 8px 0}
+.boom{background:var(--red);color:#fff;font:900 12px var(--f-body);padding:0 8px;height:44px;display:flex;align-items:center;border-radius:6px}
+.under{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;color:var(--muted);margin-top:6px}
+.under div:last-child{text-align:right}
+/* backup strip */
+.days{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px 0}
+.days div{border-radius:6px;padding:6px 2px;text-align:center;font:700 12px var(--f-mono);background:var(--panel2);color:var(--muted)}
+.days .f{background:var(--b);color:#0e1317}
+.days .u{background:var(--y);color:#1a1300}
+.days .z{background:var(--gfill);color:#fff}
+.lab{font-size:13px;font-weight:700;margin-top:8px}
+/* OSI */
+.osi{display:grid;gap:3px}
+.osi div{display:grid;grid-template-columns:2.2em 6.5em 1fr;gap:8px;align-items:center;padding:6px 8px;border-radius:6px;background:var(--panel2);font-size:13px}
+.osi b{font-family:var(--f-mono);color:var(--yt)}
+.osi .tcp{grid-column:1/-1;font-size:12px;color:var(--muted);background:none;padding:2px 8px}
+.tip{margin-top:10px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.foot{margin-top:40px;font-size:13px;color:var(--muted);display:grid;gap:6px}
+.foot a{color:var(--b)}
+.legend{font-size:13px;color:var(--muted);margin-top:10px}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="mono" style="color:var(--muted);font-size:12px;letter-spacing:.08em"><a href="index.html" style="color:var(--b);text-decoration:none">← 速查表首頁</a>　iPAS 資訊安全工程師・初級｜2026/10/31（115 年第 2 次）</p>
+  <h1>考前急救<em>小抄</em></h1>
+  <p class="lede">從近三年官方公告試題（113-1、113-2、114-1、114-2、115-1，共 500 題）加上樣題與兩科學習指引整理。<span class="a">黃字</span>是答案，右邊小灰標是出處題號。</p>
+  <div class="strip">
+    <div class="stat"><b>50 題 / 75 分</b><span>每科單選，平均每題 90 秒</span></div>
+    <div class="stat"><b>錯 ≤ 10 題</b><span>每題 2 分，80 分 = 答對 40 題</span></div>
+    <div class="stat"><b>平均 70・單科 ≥ 60</b><span>同時考兩科的及格門檻（簡章）</span></div>
+    <div class="stat"><b>原題會重出</b><span>近三年至少 5 組幾乎一字不差</span></div>
+  </div>
+  <p class="legend">題號格式：<span class="s">114-1#9</span> = 114 年第 1 次第 9 題。科一題目來自「資訊安全管理概論」卷，科二來自「資訊安全技術概論」卷。</p>
+</header>
+
+<nav aria-label="章節">
+  <a class="kq" href="#keys">秒選</a>
+  <a class="k1" href="#k1">科一 管理</a>
+  <a class="k2" href="#k2">科二 技術</a>
+  <a class="kq" href="#traps">陷阱</a>
+  <button class="quiz" id="quizBtn" type="button" aria-pressed="false">遮答案自測</button>
+</nav>
+
+<!-- ============ 秒選 ============ -->
+<section id="keys">
+  <div class="sec-head"><span class="tag tq">秒選</span><h2>看到關鍵字，直接選</h2><span class="w">兩科最常出現的反射題</span></div>
+  <div class="tw"><table>
+    <thead><tr><th>題目出現</th><th>選</th><th>出處</th></tr></thead>
+    <tbody>
+    <tr><td>資通安全「演練作業」規定在哪個子法</td><td class="a">資通安全事件通報及應變辦法</td><td><span class="s">113-1#7</span><span class="s">114-1#9</span><span class="s">114-2#6</span></td></tr>
+    <tr><td>ISMS 稽核的主要目的</td><td class="a">確保內部控制的有效性</td><td><span class="s">113-1#3</span><span class="s">114-2#4</span></td></tr>
+    <tr><td>管理審查屬 PDCA 哪一段</td><td class="a">Check 檢核</td><td><span class="s">114-1#2</span></td></tr>
+    <tr><td>官網提供 SHA-256 雜湊值</td><td class="a">完整性</td><td><span class="s">115-1#4</span></td></tr>
+    <tr><td>DDoS 打掛網站</td><td class="a">可用性</td><td><span class="s">113-2#40</span></td></tr>
+    <tr><td>導入 DLP／網段隔離＋偵測</td><td class="a">風險降低</td><td><span class="s">114-1#21</span><span class="s">115-1#23</span></td></tr>
+    <tr><td>低風險項目</td><td class="a">風險保留（接受）</td><td><span class="s">113-2#22</span></td></tr>
+    <tr><td>保險、委外、洪災區機房</td><td class="a">風險轉移／分擔</td><td><span class="s">114-2#22</span><span class="s">114-2#23</span></td></tr>
+    <tr><td>誰決定資料的機密等級</td><td class="a">資產擁有者 Owner（不是系統管理員）</td><td><span class="s">115-1#14</span><span class="s">115-1#16</span></td></tr>
+    <tr><td>上班時間＋公司電腦＋台灣 IP 才能存取</td><td class="a">ABAC</td><td><span class="s">115-1#27</span></td></tr>
+    <tr><td>手機 OTP 驗證碼</td><td class="a">所持之物 Something you have</td><td><span class="s">115-1#33</span><span class="s">113-1#28</span></td></tr>
+    <tr><td>門禁要更嚴</td><td class="a">FAR 降、FRR 升</td><td><span class="s">113-2#27</span></td></tr>
+    <tr><td>數位簽章作用</td><td class="a">驗證完整性與來源（私鑰簽、公鑰驗）</td><td><span class="s">114-1#36</span></td></tr>
+    <tr><td>防彩虹表、讓相同密碼雜湊不同</td><td class="a">Salt 鹽值</td><td><span class="s">115-1#39</span></td></tr>
+    <tr><td>RTO 和 MTPD 的鐵律</td><td class="a">RTO 不可大於 MTPD</td><td><span class="s">115-1#50</span></td></tr>
+    <tr><td>備份頻率和 RPO</td><td class="a">備份間隔 ≤ RPO</td><td><span class="s">115-1(科二)#39</span><span class="s">114-1#49</span></td></tr>
+    <tr><td>防 SQL Injection 最有效</td><td class="a">Prepared Statement／參數化查詢</td><td><span class="s">115-1(科二)#26</span></td></tr>
+    <tr><td>防 CSRF 最常用</td><td class="a">請求中加入隨機 Token</td><td><span class="s">113-2(科二)#16</span><span class="s">114-2(科二)#26</span></td></tr>
+    <tr><td>改網址參數 account= 就看到別人資料</td><td class="a">Broken Access Control（A01）</td><td><span class="s">114-2(科二)#28</span></td></tr>
+    <tr><td>主機確定被駭，第一步</td><td class="a">隔離網路</td><td><span class="s">115-1(科二)#16</span><span class="s">114-2(科二)#31</span></td></tr>
+    <tr><td>防火牆最佳實務</td><td class="a">預設拒絕＝白名單</td><td><span class="s">114-2(科二)#2</span><span class="s">#4</span><span class="s">#9</span></td></tr>
+    <tr><td>攻擊者刪雲端備份讓你無法復原</td><td class="a">不可變備份 Immutable＋存取控管</td><td><span class="s">114-2(科二)#38</span><span class="s">115-1(科二)#37</span></td></tr>
+    <tr><td>防止入侵後刪日誌</td><td class="a">即時傳送到遠端獨立 Log Server</td><td><span class="s">115-1(科二)#43</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 科一 ============ -->
+<section id="k1">
+  <div class="sec-head"><span class="tag t1">科一</span><h2>資訊安全管理概論</h2><span class="w">指引配分：存取控制 20%・資產分級 15%・其餘各 5–10%</span></div>
+
+  <div class="grid">
+    <div class="card k1">
+      <h3>資通安全事件：時限一條線<span class="hot">年年考</span></h3>
+      <div class="tl">
+        <div><b>1 小時</b>知悉後通報</div>
+        <div><b>8 / 2 小時</b>主管機關審核<span class="lv">1–2 級 8h・3–4 級 2h</span></div>
+        <div><b>72 / 36 小時</b>損害控制或復原<span class="lv">1–2 級 72h・3–4 級 36h</span></div>
+        <div><b>取最高級</b>C、I、A 分別評<span class="lv">2、3、1 級 → 3 級</span></div>
+      </div>
+      <ul>
+        <li>3–4 級寫成「72 小時內」完成損害控制 = <span class="x">錯</span><span class="s">114-1#6</span></li>
+        <li>非核心系統資料遭輕微竄改 → <span class="a">第 1 級</span><span class="s">114-1#41</span></li>
+        <li>CIA 各自評級，事件等級 = <span class="a">最高的那一級</span><span class="s">115-1#44</span></li>
+        <li>資安法立法目的：<span class="a">推動國家資安政策、保障國家安全</span><span class="s">113-2#11</span></li>
+      </ul>
+      <p class="tip">時限出自學習指引第七章與 114-1#6、113-2#9 的官方答案。</p>
+    </div>
+
+    <div class="card k1">
+      <h3>個資法：三條必背</h3>
+      <ul>
+        <li><b>§3 五項權利</b>（不得預先拋棄）：<span class="a">查詢閱覽、製給複製本、補充更正、停止蒐集處理利用、刪除</span></li>
+        <li>假權利：請求公開<span class="s">113-1#11</span>、製給正本<span class="s">115-1#7</span>、永久保留<span class="s">樣題2#96</span></li>
+        <li><b>§6 特種個資</b>：<span class="a">病歷、醫療、基因、性生活、健康檢查、犯罪前科</span>。指紋不是<span class="s">115-1#8</span></li>
+        <li><b>§13 回覆時限</b>：閱覽、複製本 <span class="a">15 日</span>；更正、刪除、停止 <span class="a">30 日</span>（各可延一次同天數）。45 天才回 = 違法<span class="s">113-1#9</span></li>
+        <li>§8 告知<span class="x">不必</span>書面<span class="s">113-1#8</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>台灣個資法 vs GDPR</h3>
+      <ul>
+        <li>台灣列特種、GDPR 沒明列：<span class="a">犯罪前科</span><span class="s">113-2#13</span><span class="s">113-1#12</span></li>
+        <li>GDPR 有、台灣沒有：<span class="a">資料可攜權</span><span class="s">114-2#12</span></li>
+        <li>GDPR 適用：只要處理歐盟居民資料，<span class="x">不限</span>歐盟境內公司<span class="s">114-1#11</span></li>
+        <li>營業秘密三要件：<span class="a">非一般人所知、具經濟價值、已採合理保密措施</span><span class="s">115-1#11</span></li>
+        <li>著作權不保護：<span class="a">單純傳達事實的新聞報導</span><span class="s">114-1#13</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>ISO 編號對照</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k mono">27001</td><td>ISMS 驗證標準</td></tr>
+        <tr><td class="k mono">27002</td><td>控制措施實作指引<span class="s">114-2#3</span></td></tr>
+        <tr><td class="k mono">27017</td><td><span class="a">雲端服務資安</span><span class="s">115-1#1</span></td></tr>
+        <tr><td class="k mono">27018</td><td><span class="a">雲端個資保護</span><span class="s">113-2#12</span></td></tr>
+        <tr><td class="k mono">27701</td><td><span class="a">隱私 PIMS，接在 27001 上</span><span class="s">114-1#3</span></td></tr>
+        <tr><td class="k mono">27799</td><td><span class="a">醫療健康資訊</span><span class="s">115-1#2</span></td></tr>
+        <tr><td class="k mono">22301</td><td>營運持續管理<span class="s">樣題2#43</span></td></tr>
+        <tr><td class="k mono">PCI DSS</td><td><span class="a">信用卡支付卡</span><span class="s">113-2#7</span><span class="s">114-1#8</span></td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="card k1">
+      <h3>ISO 27001:2022 改版</h3>
+      <ul>
+        <li>新增 11 項控制：威脅情資、使用雲端服務之資安、ICT 營運持續備妥、實體安全監視、組態管理、資訊刪除、資料遮蔽、<span class="a">資料洩漏預防</span>、監視活動、<span class="a">網頁過濾</span>、安全程式設計</li>
+        <li><span class="x">不是</span>新增：設備汰除或重新使用之保全<span class="s">114-1#4</span>、技術漏洞管理<span class="s">114-2#1</span></li>
+        <li>不是轉版重點：驗證範圍調整<span class="s">113-2#3</span></li>
+        <li>初次驗證兩階段：<span class="a">文件審查＋實地審查</span><span class="s">113-2#2</span></li>
+      </ul>
+      <p class="tip">11 項清單取自 ISO/IEC 27002:2022 新增控制；考題只驗證過其中幾項。</p>
+    </div>
+
+    <div class="card k1">
+      <h3>資產管理<span class="hot">15%</span></h3>
+      <ul>
+        <li>盤點時機：<span class="a">定義 ISMS 範圍之後、風險評鑑之前</span><span class="s">115-1#15</span></li>
+        <li>盤點要定期、全面，不只硬體、不是查殘值<span class="s">114-1#14</span><span class="s">114-2#20</span></li>
+        <li>資產漏列 → <span class="a">風險評估無法準確</span><span class="s">113-2#19</span></li>
+        <li>跨部門評估不一 → <span class="a">取最高等級</span><span class="s">113-2#20</span></li>
+        <li>Owner 不負責「最低成本採購」<span class="s">114-1#15</span></li>
+        <li>分類依 CIA，<span class="x">不含</span>鑑別性<span class="s">114-2#14</span></li>
+        <li>兩大類：<span class="a">主要資產、支援資產</span><span class="s">114-2#19</span></li>
+        <li>RAM、CPU 中的資料 = <span class="a">Data in use</span><span class="s">114-1#19</span></li>
+        <li>SBOM 盤點 <span class="a">第三方元件與開源函式庫版本</span><span class="s">115-1#18</span></li>
+        <li>影子 IT 先做 <span class="a">軟體與雲端服務盤點</span><span class="s">115-1#19</span></li>
+        <li>密級紙本暫離座位<span class="x">不得</span>放開放處<span class="s">113-1#18 = 114-1#20</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>風險處理四選一</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k">降低／修改</td><td>DLP、網段隔離、建備援系統</td></tr>
+        <tr><td class="k">轉移／分擔</td><td>保險、委外、洪災區機房</td></tr>
+        <tr><td class="k">避免</td><td>停止或退出產生風險的活動</td></tr>
+        <tr><td class="k">保留／接受</td><td>低風險、處理成本過高</td></tr>
+      </tbody></table></div>
+      <ul style="margin-top:8px">
+        <li>「風險拒絕」<span class="x">不存在</span><span class="s">114-2#21</span>；成本最高 = <span class="a">追求零風險</span><span class="s">113-1#23</span></li>
+        <li>流程：<span class="a">識別 → 分析 → 評估 → 處理</span><span class="s">114-1#23</span></li>
+        <li>風險值 = <span class="a">資產價值 × 威脅可能性 × 弱點利用難易</span><span class="s">115-1#24</span></li>
+        <li>SLE = AV × EF；ALE = SLE × ARO（指引）</li>
+        <li>NIST 模型「脆弱性」= <span class="a">SQL 注入漏洞本身</span><span class="s">114-2#25</span></li>
+        <li>NIST RMF：評估完下一步 <span class="a">Responding</span><span class="s">115-1#25</span></li>
+        <li>系統轉換風險最大：<span class="a">一次性 Abrupt</span><span class="s">114-1#24</span></li>
+        <li>風險擁有者<span class="x">不必</span>是資安專家<span class="s">113-2#24</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>存取控制<span class="hot">20%</span></h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k mono">DAC</td><td>擁有者自己給權限</td></tr>
+        <tr><td class="k mono">MAC</td><td>依分類標籤，系統強制，管理者也不能例外</td></tr>
+        <tr><td class="k mono">RBAC</td><td>依角色；DAC 依擁有者設定<span class="s">114-2(科二)#17</span></td></tr>
+        <tr><td class="k mono">ABAC</td><td>多屬性（時間、裝置、地點）；「僅單一屬性」= <span class="x">錯</span><span class="s">113-2#26</span></td></tr>
+      </tbody></table></div>
+      <ul style="margin-top:8px">
+        <li>AAA：<span class="a">Authentication、Authorization、Accounting</span>（不是 Account Management）<span class="s">114-1#32</span></li>
+        <li>預設拒絕：<span class="a">沒有規則符合就拒絕</span><span class="s">114-2#31</span></li>
+        <li>授權檢查必須在 <span class="a">伺服器端</span><span class="s">114-2#34</span></li>
+        <li>JIT：<span class="a">平時零權限，工單期間給、用完收回</span><span class="s">115-1#30</span></li>
+        <li>外包帳號沒收回 → <span class="a">權限與需求連動</span><span class="s">115-1#34</span></li>
+        <li>登入連續失敗 → <span class="a">鎖定並拉長間隔</span><span class="s">115-1#26</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>身分驗證、生物辨識、零信任</h3>
+      <ul>
+        <li>三因素：所知（密碼、PIN）／所有（OTP、IC 卡、手機）／所具（指紋、虹膜、聲紋）。裝置類型「所用之物」<span class="x">不是</span><span class="s">114-1#34</span></li>
+        <li>生物辨識的角色 = <span class="a">身分驗證 Authentication</span><span class="s">113-2#29</span></li>
+        <li>效期最短：<span class="a">聲紋</span><span class="s">114-1#33</span>；防照片假人：<span class="a">活體檢測 PAD</span><span class="s">115-1#28</span></li>
+        <li>FIDO：伺服器只存公鑰、私鑰在裝置；由 FIDO 聯盟訂定，<span class="x">不是 IETF</span><span class="s">113-1#32</span></li>
+        <li>抗釣魚：FIDO2 可以；靜態恢復碼最不適切<span class="s">115-1#35</span></li>
+        <li>零信任：<span class="a">每次存取都持續驗證、動態授權</span><span class="s">115-1#32</span></li>
+        <li>政府 ZTA 三核心：<span class="a">身分鑑別、設備鑑別、信任推斷</span>（沒有系統識別）<span class="s">113-2#33</span></li>
+        <li>CI/CD 不寫死密碼 → <span class="a">工作負載身分同盟、短期憑證</span><span class="s">115-1#29</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>密碼學</h3>
+      <ul>
+        <li>對稱：DES、3DES、AES、Blowfish、RC；非對稱：<span class="a">RSA、ECC、DH、ElGamal</span><span class="s">114-2#36</span></li>
+        <li>兩把不同金鑰＋指數 mod 運算 → <span class="a">RSA</span><span class="s">114-1#37</span></li>
+        <li>加密：公鑰加、<span class="a">私鑰解</span><span class="s">114-2#39</span>；簽章：<span class="a">私鑰簽、公鑰驗</span></li>
+        <li>公鑰加密讓 <span class="a">沒共享秘密金鑰的兩方</span>也能安全通訊<span class="s">115-1#36</span></li>
+        <li>雜湊：<span class="a">任意長度 → 固定長度、單向不可逆</span><span class="s">115-1#38</span><span class="s">115-1#40</span></li>
+        <li>生日攻擊 → <span class="a">MD5</span><span class="s">113-2#39</span></li>
+        <li>憑證有安全顧慮 → <span class="a">註銷</span><span class="s">113-2#37</span></li>
+        <li>金鑰生命週期：<span class="a">產生、儲存、分發、使用到銷毀全程</span><span class="s">114-2#37</span>；HSM 內金鑰<span class="x">不可</span>明文匯出<span class="s">114-2#38</span></li>
+        <li>資料遮罩<span class="x">不是</span>資料庫加密<span class="s">113-1#34 = 114-1#30</span></li>
+        <li>密碼學達不到：<span class="a">可用性</span><span class="s">113-1#40</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>事故處理：NIST SP 800-61</h3>
+      <div class="tl">
+        <div><b>準備</b></div>
+        <div><b>偵測分析</b><span class="lv">界定範圍、分級<br>關聯日誌比對 IOC</span></div>
+        <div><b>封鎖根除復原</b><span class="lv">先限制擴散</span></div>
+        <div><b>事後活動</b><span class="lv">檢討改善</span></div>
+      </div>
+      <ul>
+        <li>「備份」<span class="x">不是</span>生命週期階段<span class="s">113-2#42</span></li>
+        <li>偵測分析的任務：<span class="a">依跡證界定範圍與嚴重度</span><span class="s">115-1#42</span><span class="s">114-2#45</span></li>
+        <li>封鎖首要目標：<span class="a">限制擴散</span><span class="s">115-1#43</span></li>
+        <li>Rootkit 清不乾淨 → <span class="a">從乾淨備份還原或重裝</span><span class="s">115-1#45</span></li>
+        <li>通報<span class="x">不需</span>嫌疑人身分<span class="s">113-1#44</span>；<span class="x">不限</span>書面<span class="s">113-1#43</span></li>
+        <li>數位證據<span class="x">不需</span>彌封文件袋<span class="s">114-1#43</span></li>
+        <li>TLP 2.0 標籤：<span class="a">RED、AMBER、GREEN、CLEAR</span><span class="s">114-2#43</span></li>
+      </ul>
+    </div>
+
+    <div class="card k1">
+      <h3>營運持續：RPO 往回看，RTO 往前看<span class="hot">年年考</span></h3>
+      <div class="axis">
+        <div class="bar"><div class="seg l">← RPO 可遺失多少資料</div><div class="boom">災害</div><div class="seg r">RTO 多久恢復 →</div></div>
+        <div class="under"><div>決定備份頻率：間隔 ≤ RPO</div><div>RTO ≤ MTPD（最大可容忍中斷）</div></div>
+      </div>
+      <ul>
+        <li>RPO 3 天、RTO 16 小時，最省又合規的備份週期 = <span class="a">2 天</span><span class="s">114-1#49</span></li>
+        <li>BIA 確認的是 Maximum TPD；寫成 <span class="x">Minimum</span> 就是錯<span class="s">113-2#47</span></li>
+        <li>BIA <span class="x">不含</span>「制定災復技術操作手冊」<span class="s">114-2#49</span></li>
+        <li>MTPD 從 <span class="a">BIA</span> 取得<span class="s">樣題2#140</span></li>
+        <li>熱備援最快最貴，<span class="a">冷備援最慢最便宜</span><span class="s">113-1#49</span><span class="s">113-2#50</span></li>
+        <li>BCM 需 <span class="a">核心業務所有相關部門</span>共同投入<span class="s">115-1#47</span><span class="s">114-2#47</span></li>
+        <li>災難時最重要：<span class="a">人員生命安全</span><span class="s">113-2#49</span></li>
+        <li>勒索軟體 → <span class="a">用未受感染的備份恢復</span><span class="s">114-1#50</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 科二 ============ -->
+<section id="k2">
+  <div class="sec-head"><span class="tag t2">科二</span><h2>資訊安全技術概論</h2><span class="w">指引配分：網路 14%・通訊與行動 14%・新興科技 12%・其餘各 10%</span></div>
+
+  <div class="grid">
+    <div class="card k2">
+      <h3>OSI 七層：攻擊和設備住哪層</h3>
+      <div class="osi">
+        <div><b>7</b>應用層<span>瀏覽器、HTTP、<span class="a">HTTP Flood</span><span class="s">113-2#10</span></span></div>
+        <div><b>6</b>表達層<span>編碼、加密格式</span></div>
+        <div><b>5</b>會議層<span>管理應用程式之間的對話<span class="s">113-2#9</span></span></div>
+        <div><b>4</b>傳輸層<span>TCP、UDP、SYN／UDP Flood</span></div>
+        <div><b>3</b>網路層<span>IP、路由器、IPsec、<span class="a">封包過濾、GEOIP</span><span class="s">114-2#14</span></span></div>
+        <div><b>2</b>資料連結<span>MAC、交換器、ARP、VLAN</span></div>
+        <div><b>1</b>實體層<span>纜線、線路搭接</span></div>
+        <div class="tcp">TCP/IP 四層＝應用（合併 7、6、5）、傳輸、網際網路、網路存取；<span class="x">沒有會議層</span><span class="s">113-1#11</span></div>
+      </div>
+      <ul style="margin-top:8px">
+        <li>瀏覽器在 <span class="a">應用層</span><span class="s">113-1#5</span>；SSH 運作在資料連結層 = <span class="x">錯</span><span class="s">115-1#6</span></li>
+        <li>路由器：<span class="a">找最佳路徑、跨網路轉送</span><span class="s">113-1#6</span><span class="s">113-2#17</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>Port 與明文協定</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k mono">21</td><td>FTP（SFTP 是 21 = <span class="x">錯</span>）<span class="s">113-1#9</span></td></tr>
+        <tr><td class="k mono">22</td><td><span class="a">SSH、SFTP</span><span class="s">114-2#49</span></td></tr>
+        <tr><td class="k mono">23</td><td>Telnet，明文<span class="s">113-1#13</span></td></tr>
+        <tr><td class="k mono">53</td><td>DNS（TCP 與 UDP 都用）</td></tr>
+        <tr><td class="k mono">80 / 443</td><td>HTTP / HTTPS</td></tr>
+        <tr><td class="k mono">445</td><td><span class="a">SMB 網路芳鄰</span><span class="s">113-1#18</span></td></tr>
+        <tr><td class="k mono">514</td><td><span class="a">Syslog，UDP</span><span class="s">114-1#42</span></td></tr>
+        <tr><td class="k mono">3389</td><td>RDP 遠端桌面</td></tr>
+      </tbody></table></div>
+      <ul style="margin-top:8px">
+        <li>內部郵件加密：<span class="a">SMTP＋STARTTLS</span><span class="s">114-2#12</span></li>
+        <li>IP Camera 串流：<span class="a">RTSPS</span><span class="s">113-1#23</span></li>
+        <li>遠端 Shell 用 SSH；配成 SFTP = <span class="x">錯</span><span class="s">115-1(科一)#20</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>防火牆家族</h3>
+      <ul>
+        <li>封包過濾看標頭：IP、Port、協定、介面；<span class="x">不看</span> MAC<span class="s">113-2#2</span>、<span class="x">不看</span>資料內容<span class="s">115-1#1</span></li>
+        <li>「封包過濾運作在 L4」被判錯 → 以 <span class="a">L3 網路層</span>作答<span class="s">114-1#9</span></li>
+        <li>狀態檢視：<span class="a">狀態表</span>記連線<span class="s">114-1#9</span>；DPI：<span class="a">分析內容辨識應用與威脅</span><span class="s">113-2#13</span></li>
+        <li>NGFW 有 VPN、DLP、沙箱；<span class="x">沒有</span>原始碼掃描<span class="s">114-2#23</span></li>
+        <li>ACL = <span class="a">定義哪些流量能通過</span><span class="s">114-1#1</span></li>
+        <li>只開放內部一台 RDP 給外部 → <span class="a">Port Mapping</span><span class="s">113-2#14</span></li>
+        <li>DMZ 放 <span class="a">對外 Web、郵件伺服器</span><span class="s">114-1#5</span></li>
+        <li>降橫向移動 → <span class="a">網路分段、VLAN</span><span class="s">114-2#6</span><span class="s">114-2#7</span>；帳密被偷 → <span class="a">MFA</span><span class="s">114-2#8</span></li>
+        <li>VLAN 雙重標籤 → <span class="a">Native VLAN 設成未使用的 VLAN</span><span class="s">115-1#3</span></li>
+        <li>特徵比對 IDS 遇零時差 → <span class="a">不會標記，事後才察覺</span><span class="s">114-2#5</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>看情境認攻擊</h3>
+      <div class="tw"><table><tbody>
+        <tr><td>大量請求耗盡資源</td><td class="a">DoS／DDoS</td></tr>
+        <tr><td>DNS 放大</td><td class="a">DDoS<span class="s">113-1#7</span></td></tr>
+        <tr><td>中介主機下指令</td><td class="a">C&amp;C 伺服器<span class="s">113-2#4</span></td></tr>
+        <tr><td>Mirai 怎麼感染</td><td class="a">預設帳密<span class="s">113-1#49</span></td></tr>
+        <tr><td>攔截、竄改再轉送</td><td class="a">中間人 MITM<span class="s">113-1#3</span></td></tr>
+        <tr><td>竄改區網 MAC-IP 對應</td><td class="a">ARP 詐騙<span class="s">114-1#6</span></td></tr>
+        <tr><td>惡意 DHCP</td><td class="a">發錯 DNS 導向惡意站<span class="s">115-1#4</span></td></tr>
+        <tr><td>BGP 劫持</td><td class="a">RPKI 驗證<span class="s">115-1#5</span></td></tr>
+        <tr><td>任何人可拿全部 DNS 紀錄</td><td class="a">Zone Transfer<span class="s">113-1#12</span></td></tr>
+        <tr><td>區網大量電腦傳不明資料</td><td class="a">蠕蟲<span class="s">114-1#8</span></td></tr>
+        <tr><td>USB 韌體偽裝成鍵盤</td><td class="a">BadUSB<span class="s">114-1#2</span></td></tr>
+        <tr><td>寫進 Run／RunOnce</td><td class="a">持久化<span class="s">115-1#21</span></td></tr>
+        <tr><td>利用 DLL 搜尋順序</td><td class="a">DLL Sideloading<span class="s">115-1#22</span></td></tr>
+        <tr><td>Spectre</td><td class="a">分支預測、推測執行<span class="s">114-1#21</span></td></tr>
+        <tr><td>交通標誌貼貼紙騙 AI</td><td class="a">對抗性攻擊<span class="s">115-1#46</span></td></tr>
+        <tr><td>網路釣魚手法不包括</td><td class="a">中間人攻擊<span class="s">114-2#19</span></td></tr>
+      </tbody></table></div>
+      <p class="tip">最有效防 DoS：<span class="a">限制單一 IP 請求速率</span><span class="s">114-2#24</span></p>
+    </div>
+
+    <div class="card k2">
+      <h3>Web 三兄弟：XSS、SQLi、CSRF<span class="hot">年年考</span></h3>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>在哪執行</th><th>防禦</th></tr></thead>
+        <tbody>
+        <tr><td class="k">XSS</td><td>受害者<span class="a">瀏覽器</span>跑 Script<span class="s">113-1#21</span><span class="s">114-2#27</span></td><td>輸出 HTML Encode</td></tr>
+        <tr><td class="k">SQLi</td><td><span class="a">資料庫</span>跑惡意 SQL<span class="s">114-2#3</span></td><td><span class="a">Prepared Statement</span><span class="s">115-1#26</span></td></tr>
+        <tr><td class="k">CSRF</td><td>已登入者被誘發<span class="a">非預期請求</span><span class="s">115-1#23</span></td><td><span class="a">隨機 Token</span></td></tr>
+        </tbody>
+      </table></div>
+      <ul style="margin-top:8px">
+        <li>只擋引號、分號就能防 SQLi = <span class="x">錯</span><span class="s">113-1#19</span></li>
+        <li>CSRF <span class="x">不屬於</span> Injection；XSS 屬於<span class="s">114-2#21</span></li>
+        <li>用 DNS 把資料傳出去 → <span class="a">Out-of-band SQLi</span><span class="s">115-1#20</span></li>
+        <li>HTTP 請求走私 → <span class="a">前後端對請求邊界解析不一致</span><span class="s">115-1#24</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>OWASP Top 10:2021 考過的</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k mono">A01</td><td>存取控制失效：改參數看別人資料、頁面沒做權限<span class="s">114-2#28</span><span class="s">113-1#2</span></td></tr>
+        <tr><td class="k mono">A02</td><td>加密失效：用 HTTP 傳 = <span class="x">錯</span><span class="s">113-2#1</span></td></tr>
+        <tr><td class="k mono">A03</td><td>Injection（SQL、Command、XSS）</td></tr>
+        <tr><td class="k mono">A05</td><td>安全設定缺陷：<span class="a">預設帳密仍啟用</span>、雲端設定不慎<span class="s">113-2#19</span><span class="s">114-1#45</span></td></tr>
+        <tr><td class="k mono">A06</td><td>危險或過舊元件</td></tr>
+        <tr><td class="k mono">A10</td><td>SSRF；說它「威脅不高不必修」= <span class="x">錯</span><span class="s">114-1#19</span></td></tr>
+      </tbody></table></div>
+    </div>
+
+    <div class="card k2">
+      <h3>加密通訊與無線</h3>
+      <ul>
+        <li>TLS 握手交換隨機數 → <span class="a">金鑰多樣、不可預測</span><span class="s">114-1#4</span></li>
+        <li>HTTPS 仍顯示「憑證不被信任」→ <span class="a">自簽憑證</span><span class="s">114-2#13</span></li>
+        <li>大量資料又要交換金鑰 → <span class="a">非對稱交換金鑰，對稱加密資料</span><span class="s">115-1#14</span></li>
+        <li>加密＋完整性一次做到：<span class="a">GCM</span><span class="s">115-1#12</span>；防長度延展：<span class="a">HMAC</span><span class="s">114-1#7</span></li>
+        <li>有碰撞缺陷不再用：<span class="a">MD5</span><span class="s">115-1#38</span>；量子威脅：<span class="a">PQC</span><span class="s">115-1#48</span></li>
+        <li>WPA3 優點：<span class="a">SAE 抗離線暴力破解</span><span class="s">115-1#7</span>；過渡模式被逼回 WPA2：<span class="a">降級攻擊</span><span class="s">115-1#13</span></li>
+        <li>破 WPA2 密碼：<span class="a">字典攻擊</span><span class="s">113-2#50</span></li>
+        <li>IPsec 要機密性用 <span class="a">ESP</span>（AH 只驗證）<span class="s">樣題2#5</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>作業系統</h3>
+      <ul>
+        <li><span class="mono">/etc/shadow</span> 密碼雜湊；<span class="mono">~/.bash_history</span> 是<span class="a">下過的指令</span>，說成登入紀錄 = <span class="x">錯</span><span class="s">113-2#15</span></li>
+        <li><span class="mono">/var/log/messages</span> 不是「最近一次登入」<span class="s">113-2#39</span></li>
+        <li>能不能刪、新增檔案，看 <span class="a">所在目錄的 w 權限</span><span class="s">113-2#18</span></li>
+        <li>強化：<span class="a">關非必要服務、移預設帳號、套安全基準</span><span class="s">115-1#17</span>；保留 nmap = <span class="x">錯</span><span class="s">114-2#18</span></li>
+        <li>Administrator 建議開啟 = <span class="x">錯</span><span class="s">113-1#16</span></li>
+        <li>限制程式執行：<span class="a">AppLocker</span><span class="s">114-2#16</span>；異常登入看 <span class="a">事件檢視器「安全性」</span><span class="s">115-1#19</span></li>
+        <li>提權手法：Dirty COW、SetUID、Juicy Potato；<span class="x">Chisel 不是</span><span class="s">113-1#17</span></li>
+        <li>要先猜核心記憶體位址 → <span class="a">ASLR / KASLR</span><span class="s">115-1#15</span></li>
+        <li>評估 OS 安全性：<span class="a">Common Criteria</span><span class="s">113-1#14</span></li>
+        <li>測試與外部 IP 是否連通：<span class="a">ping</span><span class="s">115-1#11</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>安全開發</h3>
+      <ul>
+        <li>靜態原始碼工具：Fortify、Checkmarx、SonarQube、PMD。<span class="x">Nessus</span> 是弱掃<span class="s">113-1#27</span>，<span class="x">Chef</span> 是組態管理<span class="s">115-1#25</span></li>
+        <li>SCA 軟體組成分析 = <span class="a">元件有沒有已知漏洞</span><span class="s">113-2#24</span></li>
+        <li>SBOM 記名稱版本、CVE、授權；<span class="x">不記</span>動態行為日誌<span class="s">115-1#29</span></li>
+        <li>黑箱<span class="x">不需</span>知道內部結構<span class="s">113-2#27</span>；Fuzzing 是自動產生<span class="a">輸入</span>，不是產生程式碼<span class="s">113-1#26</span></li>
+        <li>修補成本最高：<span class="a">系統維運階段</span><span class="s">115-1#28</span></li>
+        <li>DevSecOps = 開發＋安全＋營運，<span class="x">沒有</span>規劃<span class="s">113-2#28</span></li>
+        <li>存密碼：<span class="a">Salt＋SHA-2</span><span class="s">114-1#28</span>；最難破：<span class="a">bcrypt</span><span class="s">113-2#31</span>；Base64、對稱加密都不行<span class="s">113-2#26</span></li>
+        <li>防反組譯：加密、混淆、加殼；「遵循開發指引」做不到<span class="s">113-2#25</span></li>
+        <li>冒煙測試<span class="x">不是</span>安全檢測<span class="s">114-1#27</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>惡意程式與弱點管理</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k">病毒</td><td>寄生在檔案，需要載體</td></tr>
+        <tr><td class="k">蠕蟲</td><td><span class="a">不寄生、自我複製、經網路傳播</span><span class="s">113-1#31</span></td></tr>
+        <tr><td class="k">木馬</td><td>偽裝成正常程式，不自我複製</td></tr>
+        <tr><td class="k">Rootkit</td><td>隱藏蹤跡，<span class="a">不易</span>被防毒發現<span class="s">113-1#15</span></td></tr>
+        <tr><td class="k">邏輯炸彈</td><td>特定條件或時間觸發</td></tr>
+      </tbody></table></div>
+      <ul style="margin-top:8px">
+        <li>防毒跳出來源不明項目 → <span class="a">隔離</span>（不是刪除）<span class="s">113-1#30</span></li>
+        <li>應用程式管理：<span class="a">白名單</span>勝黑名單<span class="s">114-2#32</span><span class="s">114-1#18</span><span class="s">113-1#33</span></li>
+        <li>延遲執行、要等滑鼠鍵盤 → 削弱 <span class="a">自動化沙箱</span><span class="s">115-1#32</span></li>
+        <li>網頁在遠端執行只回傳畫面：<span class="a">RBI</span><span class="s">114-2#33</span></li>
+        <li>實體隔離環境的入侵管道：<span class="a">USB 隨身碟</span><span class="s">115-1#34</span></li>
+        <li>CVE 編號、CWE 弱點類型、CVSS 評分；<span class="x">CSRS 不存在</span><span class="s">114-1#30</span></li>
+        <li>MITRE ATT&amp;CK、D3FEND、ENGAGE；<span class="x">DEFEND 不是</span><span class="s">114-1#31</span></li>
+        <li>弱點比對通報系統：<span class="a">VANS</span><span class="s">115-1#33</span>；弱掃目的：<span class="a">找已知 CVE</span><span class="s">115-1#31</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>備份還原：畫出來就不會錯<span class="hot">年年考</span></h3>
+      <p class="lab">週日完整＋每天增量，週四壞了要還原：</p>
+      <div class="days"><div class="f">日 Full</div><div class="u">一 增</div><div class="u">二 增</div><div class="u">三 增</div><div>四 壞</div></div>
+      <p style="font-size:13px">要 <span class="a">完整＋每一份增量</span><span class="s">115-1(科一)#48</span></p>
+      <p style="font-size:13px">注意備份時間點：凌晨 1 點備份、要回到週三下班狀態 → <span class="a">週日、一、二、三、四共 5 份</span><span class="s">113-1#38</span></p>
+      <p class="lab">週日完整＋每天差異：</p>
+      <div class="days"><div class="f">日 Full</div><div>一 差</div><div>二 差</div><div class="z">三 差</div><div>四 壞</div></div>
+      <p style="font-size:13px">只要 <span class="a">完整＋最後一份差異</span><span class="s">113-2#35</span></p>
+      <ul style="margin-top:8px">
+        <li>每日凌晨 1 點完整備份，要回週三晚上 9 點 → 用 <span class="a">週四那份</span><span class="s">114-2#35</span></li>
+        <li>3-2-1：<span class="a">3 份、2 種媒體、1 份異地</span><span class="s">113-1#32</span></li>
+        <li>RAID <span class="x">不是</span>備份<span class="s">115-1#35</span>；磁帶<span class="x">不能</span>永久保存<span class="s">113-2#36</span></li>
+        <li>全部移到雲端就能防勒索 = <span class="x">錯</span><span class="s">113-2#33</span></li>
+        <li>服務立即切換、資料幾乎零遺失：<span class="a">熱備援</span><span class="s">115-1#36</span></li>
+        <li>永久刪除機密：<span class="a">覆寫或物理銷毀</span><span class="s">114-1#38</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>日誌管理</h3>
+      <ul>
+        <li>收集 = <span class="a">彙整集中</span><span class="s">114-2#43</span>；分析 = <span class="a">找出異常與威脅</span><span class="s">115-1#40</span></li>
+        <li>輪替 = <span class="a">依時間或大小歸檔、刪舊</span><span class="s">114-2#41</span>；完整性 = <span class="a">雜湊或數位簽章</span><span class="s">114-2#42</span></li>
+        <li>SIEM <span class="x">會</span>誤報<span class="s">113-1#39</span>；告警暴增人員疲勞 → <span class="a">告警規則設計失當</span><span class="s">115-1#42</span></li>
+        <li>日誌<span class="x">不記</span>明文密碼<span class="s">115-1#44</span>；<span class="x">不交</span>給最高權限管理員維護<span class="s">113-2#43</span></li>
+        <li>「日誌至少保存 3 個月」被判 <span class="x">錯</span><span class="s">113-2#41</span></li>
+        <li>Linux 用 rsyslog、syslog-ng、RFC 5424；<span class="x">Windows Event Viewer 不適用</span><span class="s">114-2#39</span></li>
+        <li>PRI = Facility × 8 + Severity。165 = 20×8 + 5 → <span class="a">local use 4、Notice</span><span class="s">113-1#43</span></li>
+        <li>事件檢視器一堆登入失敗 → <span class="a">有人嘗試登入但都失敗</span><span class="s">113-2#42</span></li>
+        <li>IIS 預設日誌時間<span class="x">不是</span>台灣時間（是 UTC）<span class="s">113-1#40</span></li>
+        <li>PCI DSS 稽核要的是 <span class="a">持卡人資料伺服器的成功與失敗存取紀錄</span><span class="s">115-1#41</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>雲端</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k">IaaS</td><td>使用者管最多：OS 以上全部</td></tr>
+        <tr><td class="k">PaaS</td><td>使用者管 <span class="a">應用程式與資料</span></td></tr>
+        <tr><td class="k">SaaS</td><td>使用者管 <span class="a">存取管理與資料</span><span class="s">115-1#18</span></td></tr>
+      </tbody></table></div>
+      <ul style="margin-top:8px">
+        <li>機密性最好：<span class="a">私有雲</span><span class="s">113-2#44</span></li>
+        <li>雲端使用者<span class="x">不必</span>優先管實體安全<span class="s">114-1#44</span>；實體主機竊取<span class="x">不是</span>常見威脅<span class="s">113-2#45</span></li>
+        <li>SOC 2 <span class="x">不是</span>雲端專屬驗證；CSA STAR、27017、27018 是<span class="s">114-2#45</span></li>
+        <li>不用 VPN 直連 SaaS 又做 DLP：<span class="a">CASB</span><span class="s">115-1#10</span></li>
+        <li>沒用強密碼 → <span class="a">身分、憑證、存取與金鑰管理不足</span><span class="s">113-1#44</span></li>
+      </ul>
+    </div>
+
+    <div class="card k2">
+      <h3>行動裝置、IoT、OT、AI</h3>
+      <ul>
+        <li>BYOD 不想被管整台手機 → <span class="a">MAM 只管企業 App</span>；MDM 管整台、可遠端清除<span class="s">115-1#9</span></li>
+        <li>防 App 互相偷資料：<span class="a">App 沙盒</span><span class="s">114-1#48</span>；背景偷開鏡頭：<span class="a">嚴格管理權限</span><span class="s">114-2#48</span></li>
+        <li>WebView 暴露 JavaScript 介面 → <span class="a">WebView 注入</span><span class="s">114-2#46</span></li>
+        <li>App 有金流與會員資料 → 檢測等級 <span class="a">L3</span><span class="s">114-1#47</span></li>
+        <li>BYOD「個人保管所以較少外洩」= <span class="x">錯</span><span class="s">113-2#46</span></li>
+        <li>IoT 傳輸用 <span class="a">HTTPS</span>（不是 Telnet、FTP、SNMPv1）<span class="s">114-1#49</span></li>
+        <li>IoT「隱私人身比較不敏感」= <span class="x">錯</span><span class="s">113-1#50</span></li>
+        <li>OT 最高原則：<span class="a">可用性</span><span class="s">115-1#47</span>；邊緣運算挑戰：<span class="a">節點分散易被實體接觸</span><span class="s">115-1#45</span></li>
+        <li>AI SOC 避免單點失效：<span class="a">關鍵處置保留人工審核</span><span class="s">115-1#50</span>；端點紀錄較準：<span class="a">看得到處理程序樹</span><span class="s">115-1#49</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 陷阱 ============ -->
+<section id="traps">
+  <div class="sec-head"><span class="tag tq">陷阱</span><h2>考場上最容易丟分的地方</h2></div>
+  <div class="grid">
+    <div class="card">
+      <h3>原題重出（近三年）</h3>
+      <ul>
+        <li>稽核目的 <span class="s">113-1#3 = 114-2#4</span></li>
+        <li>CIA 描述正確者 <span class="s">113-1#4 = 114-2#5</span></li>
+        <li>演練作業子法 <span class="s">113-1#7 ≈ 114-1#9 ≈ 114-2#6</span></li>
+        <li>紙本保護原則 <span class="s">113-1#18 = 114-1#20</span></li>
+        <li>資料遮罩非加密 <span class="s">113-1#34 = 114-1#30</span></li>
+      </ul>
+      <p class="tip">看到熟悉題目先別急，確認題幹是問「正確」還是「不」適切。</p>
+    </div>
+    <div class="card">
+      <h3>反向題處理法</h3>
+      <ul>
+        <li>很多題目問「錯誤／不適切／不是」。讀到題幹的<span class="a">「不」</span>，先在心裡標記</li>
+        <li>四個選項逐一打 ✓✗，最後挑唯一的 ✗</li>
+        <li>出現「一律、只要、僅、永久、完全、不需要」的選項，多半就是錯的那個</li>
+        <li>管理科選「流程、授權、定期、全員參與」；技術科選「預設拒絕、白名單、伺服器端驗證」</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>最常搞反的六組</h3>
+      <div class="tw"><table><tbody>
+        <tr><td class="k">RPO / RTO</td><td>資料遺失量 / 恢復時間</td></tr>
+        <tr><td class="k">FAR / FRR</td><td>誤放（危險）/ 誤拒（不便）</td></tr>
+        <tr><td class="k">增量 / 差異</td><td>相對上一次 / 相對上次完整</td></tr>
+        <tr><td class="k">事件 / 事故</td><td>觀察到異常 / 已造成或極可能造成衝擊</td></tr>
+        <tr><td class="k">IDS / IPS</td><td>只偵測告警 / 可即時阻擋</td></tr>
+        <tr><td class="k">MDM / MAM</td><td>管整台裝置 / 只管企業 App</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="card">
+      <h3>時間分配</h3>
+      <ul>
+        <li>第一輪 45 分鐘：會的直接答，猶豫的先選一個並做標記</li>
+        <li>第二輪 20 分鐘：只回頭看標記題，每題重讀題幹的關鍵字</li>
+        <li>最後 10 分鐘：確認沒有空白題，電腦測驗可改答案</li>
+        <li>科一 13:30–14:45，科二 <span class="a">15:15–16:30</span>（第二次場次時間，簡章）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><b>出處</b></p>
+  <p>題號：iPAS 官方公告試題 113-1、113-2、114-1、114-2、115-1（資訊安全管理概論、資訊安全技術概論）與樣題 002，均在本專案檔案中，以官方答案為準。</p>
+  <p>配分、事件時限、ALE 公式：〈資訊安全工程師初級能力鑑定學習指引〉科目一、科目二（2026/04/20 更新版）。</p>
+  <p>及格標準、考試時間：〈115 年度資訊安全工程師能力鑑定簡章〉。</p>
+  <p>個資法第 3、6、13 條原文：<a href="https://6laws.net/6law/laws/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E6%B3%95.html" target="_blank" rel="noopener">個人資料保護法（六法全書，114/11/11 公布版）</a></p>
+  <p>ISO 27002:2022 新增 11 項控制、TLP 2.0 標籤名稱：依標準與 CISA 公開內容整理，非考題原文。</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var btn=document.getElementById('quizBtn');
+  var KEY='ipas-cram-quiz';
+  function set(on){
+    document.body.classList.toggle('qz',on);
+    btn.setAttribute('aria-pressed',on?'true':'false');
+    btn.textContent=on?'顯示全部答案':'遮答案自測';
+    if(!on){document.querySelectorAll('.a.on').forEach(function(e){e.classList.remove('on')});}
+    try{localStorage.setItem(KEY,on?'1':'0')}catch(e){}
+  }
+  btn.addEventListener('click',function(){set(!document.body.classList.contains('qz'))});
+  document.addEventListener('click',function(ev){
+    if(!document.body.classList.contains('qz'))return;
+    var t=ev.target.closest('.a'); if(t){t.classList.toggle('on')}
+  });
+  try{if(localStorage.getItem(KEY)==='1')set(true)}catch(e){}
+})();
+</script>
+</html>
