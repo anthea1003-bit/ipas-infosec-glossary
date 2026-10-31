@@ -67,6 +67,9 @@ section{margin-top:34px;scroll-margin-top:70px}
 /* answer highlight & quiz blur */
 .a{color:var(--yt);font-weight:700;border-radius:4px;transition:filter .15s}
 .x{color:var(--red);font-weight:700}
+.en{font:500 11px var(--f-mono);color:var(--muted)}
+.mv{font:700 12px var(--f-body);white-space:nowrap}
+.mv.u{color:var(--g)} .mv.d{color:var(--muted)} .mv.n{color:var(--yt)}
 body.qz .a{filter:blur(6px);cursor:pointer;user-select:none}
 body.qz .a.on{filter:none}
 @media (prefers-reduced-motion:reduce){.a{transition:none}}
@@ -157,6 +160,7 @@ td.k{white-space:nowrap;font-weight:700}
     <tr><td>防 SQL Injection 最有效</td><td class="a">Prepared Statement／參數化查詢</td><td><span class="s">115-1(科二)#26</span></td></tr>
     <tr><td>防 CSRF 最常用</td><td class="a">請求中加入隨機 Token</td><td><span class="s">113-2(科二)#16</span><span class="s">114-2(科二)#26</span></td></tr>
     <tr><td>改網址參數 account= 就看到別人資料</td><td class="a">Broken Access Control（A01）</td><td><span class="s">114-2(科二)#28</span></td></tr>
+    <tr><td>OWASP Top 10:2025 新增的兩類</td><td class="a">A03 軟體供應鏈失效、A10 例外狀況處理不當</td><td><span class="s">OWASP 2025</span></td></tr>
     <tr><td>主機確定被駭，第一步</td><td class="a">隔離網路</td><td><span class="s">115-1(科二)#16</span><span class="s">114-2(科二)#31</span></td></tr>
     <tr><td>防火牆最佳實務</td><td class="a">預設拒絕＝白名單</td><td><span class="s">114-2(科二)#2</span><span class="s">#4</span><span class="s">#9</span></td></tr>
     <tr><td>攻擊者刪雲端備份讓你無法復原</td><td class="a">不可變備份 Immutable＋存取控管</td><td><span class="s">114-2(科二)#38</span><span class="s">115-1(科二)#37</span></td></tr>
@@ -458,15 +462,38 @@ td.k{white-space:nowrap;font-weight:700}
     </div>
 
     <div class="card k2">
-      <h3>OWASP Top 10:2021 考過的</h3>
-      <div class="tw"><table><tbody>
-        <tr><td class="k mono">A01</td><td>存取控制失效：改參數看別人資料、頁面沒做權限<span class="s">114-2#28</span><span class="s">113-1#2</span></td></tr>
-        <tr><td class="k mono">A02</td><td>加密失效：用 HTTP 傳 = <span class="x">錯</span><span class="s">113-2#1</span></td></tr>
-        <tr><td class="k mono">A03</td><td>Injection（SQL、Command、XSS）</td></tr>
-        <tr><td class="k mono">A05</td><td>安全設定缺陷：<span class="a">預設帳密仍啟用</span>、雲端設定不慎<span class="s">113-2#19</span><span class="s">114-1#45</span></td></tr>
-        <tr><td class="k mono">A06</td><td>危險或過舊元件</td></tr>
-        <tr><td class="k mono">A10</td><td>SSRF；說它「威脅不高不必修」= <span class="x">錯</span><span class="s">114-1#19</span></td></tr>
-      </tbody></table></div>
+      <h3>OWASP Top 10：2025 為主，對照 2021<span class="hot">新版</span></h3>
+      <div class="tw"><table>
+        <thead><tr><th>2025</th><th>類別</th><th>2021</th><th>變化</th></tr></thead>
+        <tbody>
+        <tr><td class="k mono">A01</td><td><span class="a">存取控制失效</span><br><span class="en">Broken Access Control</span></td><td class="mono">A01</td><td><span class="mv n">SSRF 併入</span></td></tr>
+        <tr><td class="k mono">A02</td><td><span class="a">安全設定缺陷</span><br><span class="en">Security Misconfiguration</span></td><td class="mono">A05</td><td><span class="mv u">↑ 升 3 名</span></td></tr>
+        <tr><td class="k mono">A03</td><td><span class="a">軟體供應鏈失效</span><br><span class="en">Software Supply Chain Failures</span></td><td class="mono">A06</td><td><span class="mv n">新類別</span><br>由「危險或過舊元件」擴大</td></tr>
+        <tr><td class="k mono">A04</td><td>加密失效<br><span class="en">Cryptographic Failures</span></td><td class="mono">A02</td><td><span class="mv d">↓</span></td></tr>
+        <tr><td class="k mono">A05</td><td>注入<br><span class="en">Injection</span></td><td class="mono">A03</td><td><span class="mv d">↓</span></td></tr>
+        <tr><td class="k mono">A06</td><td>不安全設計<br><span class="en">Insecure Design</span></td><td class="mono">A04</td><td><span class="mv d">↓</span></td></tr>
+        <tr><td class="k mono">A07</td><td>身分驗證失效<br><span class="en">Authentication Failures</span></td><td class="mono">A07</td><td><span class="mv n">改名</span><br>拿掉 Identification</td></tr>
+        <tr><td class="k mono">A08</td><td>軟體或資料完整性失效<br><span class="en">Software or Data Integrity Failures</span></td><td class="mono">A08</td><td>不變</td></tr>
+        <tr><td class="k mono">A09</td><td>日誌與告警失效<br><span class="en">Security Logging &amp; Alerting Failures</span></td><td class="mono">A09</td><td><span class="mv n">改名</span><br>Monitoring → Alerting</td></tr>
+        <tr><td class="k mono">A10</td><td><span class="a">例外狀況處理不當</span><br><span class="en">Mishandling of Exceptional Conditions</span></td><td class="mono">—</td><td><span class="mv n">全新</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="lab">差別只記四件事</p>
+      <ul>
+        <li>新增兩類：<span class="a">A03 軟體供應鏈失效、A10 例外狀況處理不當</span></li>
+        <li>合併一類：2021 的 A10 SSRF <span class="a">併入 A01 存取控制失效</span></li>
+        <li>升最多：<span class="a">安全設定缺陷 A05 → A02</span>；加密失效、注入、不安全設計各往下掉</li>
+        <li>改名兩類：A07 拿掉 Identification；A09 的 Monitoring 改成 <span class="a">Alerting</span></li>
+      </ul>
+      <p class="lab">已經考過的題目（當時用 2021 編號）</p>
+      <ul>
+        <li>改參數就看到別人資料 → <span class="a">存取控制失效</span>，兩版都是 A01<span class="s">114-2#28</span><span class="s">113-1#2</span></li>
+        <li>預設帳密仍啟用、雲端設定不慎 → <span class="a">安全設定缺陷</span>（2021 A05、2025 A02）<span class="s">113-2#19</span><span class="s">114-1#45</span></li>
+        <li>用 HTTP 傳機敏資料 = <span class="x">錯</span>，屬加密失效<span class="s">113-2#1</span></li>
+        <li>說 SSRF「威脅不高不必修」= <span class="x">錯</span><span class="s">114-1#19</span>；2025 版的 SSRF 歸在 A01</li>
+        <li>XSS 屬於注入，CSRF 不屬於<span class="s">114-2#21</span></li>
+      </ul>
+      <p class="tip">題目選項會寫「A03:2021」或「A03:2025」這種年份編號，照題目寫的年份對表作答。</p>
     </div>
 
     <div class="card k2">
@@ -657,6 +684,7 @@ td.k{white-space:nowrap;font-weight:700}
   <p>及格標準、考試時間：〈115 年度資訊安全工程師能力鑑定簡章〉。</p>
   <p>個資法第 3、6、13 條原文：<a href="https://6laws.net/6law/laws/%E5%80%8B%E4%BA%BA%E8%B3%87%E6%96%99%E4%BF%9D%E8%AD%B7%E6%B3%95.html" target="_blank" rel="noopener">個人資料保護法（六法全書，114/11/11 公布版）</a></p>
   <p>ISO 27002:2022 新增 11 項控制、TLP 2.0 標籤名稱：依標準與 CISA 公開內容整理，非考題原文。</p>
+  <p>OWASP Top 10:2025 類別與 2021 對照：<a href="https://owasp.org/Top10/2025/0x00_2025-Introduction" target="_blank" rel="noopener">OWASP Top 10:2025 Introduction</a></p>
 </footer>
 </div>
 
